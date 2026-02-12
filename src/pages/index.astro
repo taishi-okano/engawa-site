@@ -1,5 +1,5 @@
 ---
-// engawa - Final Diagnostic Version (Mingei & Craftsmanship)
+// engawa - Definitive Edition: High-Density Sphere & Correct Hover
 ---
 
 <!DOCTYPE html>
@@ -26,28 +26,96 @@
   </script>
 
   <style>
-    :root { --bg: #F5F0E8; --sumi: #1C1917; --text: #3D3935; --kakishibu: #D4976C; --line: rgba(28, 25, 23, 0.08); }
+    :root {
+      --bg: #F5F0E8;
+      --sumi: #1C1917;
+      --text: #3D3935;
+      --kakishibu: #D4976C;
+      --line: rgba(28, 25, 23, 0.08);
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; min-height: 250vh; }
-    
-    .hero { height: 100vh; display: flex; flex-direction: column; position: sticky; top: 0; overflow: hidden; z-index: 10; }
-    .nav { display: flex; justify-content: space-between; align-items: center; padding: 2rem 3rem; z-index: 100; }
-    .logo { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.08em; }
-    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    ::selection { background: var(--sumi); color: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      min-height: 250vh;
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 3rem;
+      z-index: 100;
+      position: relative;
+    }
+
+    .logo { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600; text-decoration: none; color: var(--sumi); letter-spacing: 0.08em; }
+    .nav-links { display: flex; gap: 2.5rem; }
     .nav-links a { font-size: 0.85rem; opacity: 0.6; text-decoration: none; transition: 0.3s; color: var(--sumi); }
+    .nav-links a:hover { opacity: 1; }
 
     .hero-content { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
-    .hero-title { font-family: 'Lora', serif; font-size: clamp(4rem, 10vw, 9rem); font-weight: 600; color: var(--sumi); position: absolute; top: 20%; left: 3rem; z-index: 50; }
+    .hero-title { font-family: 'Lora', serif; font-size: clamp(4rem, 10vw, 9rem); font-weight: 600; color: var(--sumi); position: absolute; top: 20%; left: 3rem; z-index: 50; pointer-events: none; }
     .hero-caption { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; position: absolute; top: 15%; left: 3rem; z-index: 50; }
     .hero-tagline { font-family: 'Lora', serif; font-size: 1.15rem; font-style: italic; max-width: 26ch; opacity: 0.6; position: absolute; bottom: 15%; right: 3rem; text-align: right; z-index: 50; }
 
-    .sphere-container { position: absolute; width: 500px; height: 500px; z-index: 20; display: flex; align-items: center; justify-content: center; }
-    #sphereCanvas { width: 100%; height: 100%; border-radius: 50%; background: transparent; }
+    .sphere-container { position: absolute; width: 600px; height: 600px; z-index: 20; pointer-events: none; }
+    #sphereCanvas { width: 100%; height: 100%; border-radius: 50%; }
 
     .scroll-spacer { height: 150vh; pointer-events: none; }
-    .posts-section { min-height: 100vh; padding: 8rem 3rem; background: var(--bg); z-index: 100; position: relative; }
-    footer { padding: 4rem 3rem; border-top: 1px solid var(--line); opacity: 0.4; font-size: 0.7rem; }
+
+    /* ===== WRITING SECTION (Hover Inversion Fixed) ===== */
+    .posts-section {
+      min-height: 100vh;
+      padding: 8rem 3rem;
+      background: var(--bg);
+      z-index: 100;
+      position: relative;
+    }
+
+    .posts-container { max-width: 1400px; margin: 0 auto; }
+    .section-label { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.4; margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+
+    .post-item {
+      padding: 2.5rem 2rem;
+      margin: 0 -2rem;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: background 0.4s ease, padding-left 0.4s ease;
+      border-radius: 4px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .post-item:hover {
+      background: var(--sumi);
+      padding-left: 3rem;
+    }
+
+    .post-date { font-size: 0.8rem; opacity: 0.5; margin-bottom: 0.4rem; color: var(--text); transition: 0.4s; }
+    .post-content h3 { font-family: 'Lora', serif; font-size: 2rem; font-weight: 500; line-height: 1.3; color: var(--sumi); transition: 0.4s; }
+
+    .post-item:hover .post-date { color: var(--bg); opacity: 0.6; }
+    .post-item:hover h3 { color: var(--bg); }
+
+    footer { padding: 4rem 3rem; border-top: 1px solid var(--line); opacity: 0.4; font-size: 0.7rem; display: flex; justify-content: space-between; }
   </style>
 </head>
 <body>
@@ -61,48 +129,44 @@
       </div>
     </nav>
     <div class="hero-content">
-      <p class="hero-caption">In praise of friction</p>
-      <h1 class="hero-title">engawa</h1>
+      <p class="hero-caption" id="caption">In praise of friction</p>
+      <h1 class="hero-title" id="title">engawa</h1>
       <div class="sphere-container" id="sphereContainer">
         <canvas id="sphereCanvas"></canvas>
       </div>
-      <p class="hero-tagline">Where technology meets the grain of human things.</p>
+      <p class="hero-tagline" id="tagline">Where technology meets the grain of human things.</p>
     </div>
   </section>
 
   <div class="scroll-spacer"></div>
 
   <section class="posts-section" id="writing">
-    <div class="posts-container" style="max-width: 1400px; margin: 0 auto;">
-      <h2 style="font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.4; margin-bottom: 2rem;">Writing</h2>
-      <article style="padding: 2.5rem 0; border-bottom: 1px solid var(--line);">
-        <p style="font-size: 0.8rem; opacity: 0.5;">Feb 2026</p>
-        <h3 style="font-family: 'Lora', serif; font-size: 2rem; color: var(--sumi);">Why the Future of AI and UX Depends on Interfaces Beyond Screens</h3>
-      </article>
+    <div class="posts-container">
+      <div class="section-label">Writing</div>
+      <a href="#" class="post-item">
+        <div class="post-content">
+          <p class="post-date">Feb 2026</p>
+          <h3>Why the Future of AI and UX Depends on Interfaces Beyond Screens</h3>
+        </div>
+      </a>
     </div>
   </section>
 
   <footer>
-    <div>© 2026 · engawa · New York / Tokyo</div>
+    <div>engawa · Taishi Okano</div>
+    <div>© 2026 · New York / Tokyo</div>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script is:inline>
-    // 確実に読み込まれるまで待機する仕組み
-    function startScene() {
+    function startSphere() {
       const canvas = document.getElementById('sphereCanvas');
-      if (!canvas || typeof THREE === 'undefined') {
-        console.error("Three.js not loaded yet. Retrying...");
-        setTimeout(startScene, 100);
-        return;
-      }
+      if (!canvas || typeof THREE === 'undefined') return;
 
-      console.log("Three.js Loaded. Starting Sphere...");
-      
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      renderer.setSize(600, 600);
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
@@ -110,36 +174,69 @@
 
       const group = new THREE.Group();
       scene.add(group);
-
       const R = 1.45;
       const kakishibu = new THREE.Color('#D4976C');
 
-      // 簡略化した Flower of Life (確実に表示させるための軽量版)
-      const segments = 64;
-      for (let i = 0; i < 24; i++) {
-        const geom = new THREE.TorusGeometry(R, 0.005, 16, 100);
-        const mat = new THREE.MeshBasicMaterial({ color: kakishibu, transparent: true, opacity: 0.3 });
-        const ring = new THREE.Mesh(geom, mat);
-        ring.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-        group.add(ring);
+      function fibSphere(n) {
+        const pts = [];
+        const phi = Math.PI * (3 - Math.sqrt(5));
+        for (let i = 0; i < n; i++) {
+          const y = 1 - (i / (n - 1)) * 2;
+          const r = Math.sqrt(1 - y * y);
+          const th = phi * i;
+          pts.push(new THREE.Vector3(Math.cos(th) * r, y, Math.sin(th) * r).normalize());
+        }
+        return pts;
       }
+
+      function makeCircle(normal, radius, color, opacity) {
+        const n = normal.clone().normalize();
+        let up = new THREE.Vector3(0, 1, 0);
+        if (Math.abs(n.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
+        const t1 = new THREE.Vector3().crossVectors(n, up).normalize();
+        const t2 = new THREE.Vector3().crossVectors(n, t1).normalize();
+        const verts = [];
+        for (let i = 0; i <= 64; i++) {
+          const a = (i / 64) * Math.PI * 2;
+          verts.push(n.clone().multiplyScalar(R * 0.998).add(t1.clone().multiplyScalar(Math.cos(a) * radius)).add(t2.clone().multiplyScalar(Math.sin(a) * radius)));
+        }
+        const geom = new THREE.BufferGeometry().setFromPoints(verts);
+        return new THREE.Line(geom, new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
+      }
+
+      // Flower of Life Geometry
+      fibSphere(150).forEach(pt => group.add(makeCircle(pt, 0.2, kakishibu, 0.45)));
+      fibSphere(80).forEach(pt => group.add(makeCircle(pt, 0.35, kakishibu, 0.15)));
 
       function animate() {
         requestAnimationFrame(animate);
-        group.rotation.y += 0.003;
-        group.rotation.x += 0.001;
+        group.rotation.y += 0.002;
+        group.rotation.x += 0.0007;
         renderer.render(scene, camera);
       }
       animate();
 
       window.addEventListener('scroll', () => {
-        const p = Math.min(window.scrollY / window.innerHeight, 1);
+        const p = Math.min(window.scrollY / window.innerHeight, 1.2);
         const sc = document.getElementById('sphereContainer');
-        if (sc) sc.style.transform = `scale(${1 + p * 2.5})`;
+        const title = document.getElementById('title');
+        const tagline = document.getElementById('tagline');
+
+        if (sc) {
+          sc.style.transform = `scale(${1 + p * 5})`;
+          sc.style.opacity = Math.max(0, 1 - (p * 1.5)).toString();
+        }
+        if (title) title.style.opacity = Math.max(0, 1 - p * 2.5).toString();
+        if (tagline) tagline.style.opacity = Math.max(0, 0.6 - p * 2.5).toString();
       });
     }
 
-    window.onload = startScene;
+    // 読み込み完了後に実行
+    if (document.readyState === 'complete') {
+      startSphere();
+    } else {
+      window.addEventListener('load', startSphere);
+    }
   </script>
 </body>
 </html>
