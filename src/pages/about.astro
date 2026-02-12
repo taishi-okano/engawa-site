@@ -1,5 +1,5 @@
 ---
-// engawa - About page
+// engawa - About page (Refined Edition)
 ---
 
 <!DOCTYPE html>
@@ -39,9 +39,9 @@
       color: inherit; 
       text-decoration: none;
       border-bottom: 1px solid var(--kakishibu);
-      transition: opacity 0.2s;
+      transition: all 0.2s ease;
     }
-    a:hover { opacity: 0.7; }
+    a:hover { opacity: 0.7; color: var(--kakishibu); }
 
     /* NAV */
     .nav {
@@ -86,7 +86,7 @@
 
     /* HERO SECTION */
     .about-hero {
-      margin-bottom: 6rem;
+      margin-bottom: 4rem;
     }
 
     .about-hero h1 {
@@ -95,25 +95,28 @@
       font-weight: 600;
       line-height: 1.1;
       letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--sumi);
     }
 
-    .about-hero .subtitle {
-      font-size: 1.15rem;
-      line-height: 1.6;
-      opacity: 0.65;
-      margin-bottom: 2rem;
+    /* SOCIAL LINKS */
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
     }
 
-    .tagline {
-      font-family: 'Lora', serif;
-      font-size: 1.3rem;
-      font-style: italic;
-      line-height: 1.6;
-      color: var(--kakishibu);
-      margin-top: 2rem;
-      padding-left: 2rem;
-      border-left: 2px solid var(--kakishibu);
+    .social-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0.6;
+      border-bottom: 1px solid transparent;
+      letter-spacing: 0.02em;
+    }
+
+    .social-links a:hover {
+      opacity: 1;
+      border-bottom: 1px solid var(--kakishibu);
     }
 
     /* SECTIONS */
@@ -122,9 +125,10 @@
     }
 
     .intro-section p {
-      font-size: 1.1rem;
+      font-size: 0.95rem; /* 微調整 */
       line-height: 1.85;
       margin-bottom: 1.5rem;
+      opacity: 0.9;
     }
 
     section {
@@ -133,7 +137,7 @@
 
     section h2 {
       font-family: 'Lora', serif;
-      font-size: 1.75rem;
+      font-size: 1.5rem; /* 少し下げて品よく */
       font-weight: 600;
       letter-spacing: -0.01em;
       margin-bottom: 1.5rem;
@@ -141,9 +145,10 @@
     }
 
     section p {
-      font-size: 1.05rem;
+      font-size: 0.95rem; /* 全体を統一 */
       line-height: 1.8;
       margin-bottom: 1.25rem;
+      opacity: 0.9;
     }
 
     /* INTERESTS */
@@ -156,13 +161,14 @@
 
     .interest-tag {
       display: inline-block;
-      padding: 0.5rem 1rem;
-      background: rgba(212, 151, 108, 0.12);
-      border: 1px solid rgba(212, 151, 108, 0.3);
-      border-radius: 6px;
-      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      background: rgba(212, 151, 108, 0.08);
+      border: 1px solid rgba(212, 151, 108, 0.2);
+      border-radius: 4px;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--text);
+      letter-spacing: 0.02em;
     }
 
     /* FOOTER */
@@ -170,18 +176,18 @@
       padding: 3rem 2rem;
       border-top: 1px solid var(--line);
       text-align: center;
-      font-size: 0.85rem;
-      opacity: 0.5;
-      letter-spacing: 0.02em;
+      font-size: 0.75rem;
+      opacity: 0.4;
+      letter-spacing: 0.05em;
     }
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      .nav { padding: 1.5rem 2rem; }
+      .nav { padding: 1.5rem 1.5rem; }
       .container { padding: 4rem 1.5rem 6rem; }
-      .about-hero { margin-bottom: 4rem; }
+      .about-hero { margin-bottom: 3rem; }
+      .social-links { gap: 1rem; flex-wrap: wrap; }
       section { margin-bottom: 3.5rem; }
-      .tagline { padding-left: 1.5rem; font-size: 1.15rem; }
     }
   </style>
 </head>
@@ -199,7 +205,12 @@
     
     <div class="about-hero">
       <h1>Taishi Okano</h1>
-      <p class="subtitle">Venture co-founder exploring the intersection of technology and humanity.</p>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/taishiokano" target="_blank">LinkedIn</a>
+        <a href="https://medium.com/@taishi.okano" target="_blank">Medium</a>
+        <a href="https://taishi-okano.hashnode.dev/" target="_blank">Hashnode</a>
+        <a href="https://notion.site/..." target="_blank">Notion</a>
+      </div>
     </div>
 
     <section class="intro-section">
@@ -210,7 +221,7 @@
         Away from the relentless cycle of innovation, I find my ground through daily training, running, cooking, and reading. My reflections often center on what it means to maintain a sense of self and autonomy in a world increasingly shaped by digital systems.
       </p>
       <p>
-        Raised in Tokyo, Japan, I have a lifelong appreciation for traditional crafts and the "accumulated quality" that only time can produce. Through this blog, I aim to bridge the gap between these enduring traditions and the rapid evolution of AI, sharing insights on the thread that connects human craftsmanship with technological progress.
+        Raised in Tokyo, Japan, I have a lifelong appreciation for traditional crafts and the "accumulated quality" that only time can produce. Through this journal, I aim to bridge the gap between these enduring traditions and the rapid evolution of AI, sharing insights on the thread that connects human craftsmanship with technological progress.
       </p>
     </section>
 
@@ -228,7 +239,7 @@
     </section>
 
     <section>
-      <h2>What I Write About</h2>
+      <h2>Topics</h2>
       <div class="interests-list">
         <span class="interest-tag">AI & User Experience</span>
         <span class="interest-tag">Growth Strategy</span>
@@ -244,7 +255,7 @@
   </main>
 
   <footer>
-    <p>engawa · Taishi Okano · © 2026</p>
+    <p>engawa · Taishi Okano · © 2026 · New York / Tokyo</p>
   </footer>
 
 </body>

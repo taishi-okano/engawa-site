@@ -406,53 +406,54 @@
         }
       });
 
-      // --- Microgravity floating state ---
+      // --- Scroll & Friction Logic ---
+      let currentScrollP = 0; // 現在の描画上の位置
+      let targetScrollP = 0;  // 実際のスクロール位置
+      const friction = 0.06;  // 摩擦係数（小さいほどゆっくり、重厚になります）
+
       let floatX = 0, floatY = 0;
-      let scrollP = 0;
       const sc = document.getElementById('sphereContainer');
+      const title = document.getElementById('title');
+      const caption = document.getElementById('caption');
+      const tagline = document.getElementById('tagline');
 
       // --- Animate ---
       function animate(time) {
         requestAnimationFrame(animate);
+
+        // Lerp: 現在値を目標値に少しずつ近づける
+        currentScrollP += (targetScrollP - currentScrollP) * friction;
+
         group.rotation.y += 0.002;
         group.rotation.x += 0.0007;
 
-        // Microgravity float: layered sine waves at different
-        // frequencies and phases for organic, non-repeating drift.
-        // Amplitude is subtle — like an object in zero-G, not bouncing.
-        const t = time * 0.001; // seconds
-        floatX = Math.sin(t * 0.23) * 24
-               + Math.sin(t * 0.37 + 1.2) * 16
-               + Math.sin(t * 0.71 + 3.7) * 8;
-        floatY = Math.sin(t * 0.19 + 0.8) * 20
-               + Math.sin(t * 0.41 + 2.5) * 14
-               + Math.sin(t * 0.67 + 5.1) * 6;
+        // Microgravity float
+        const t = time * 0.001;
+        floatX = Math.sin(t * 0.23) * 24 + Math.sin(t * 0.37 + 1.2) * 16 + Math.sin(t * 0.71 + 3.7) * 8;
+        floatY = Math.sin(t * 0.19 + 0.8) * 20 + Math.sin(t * 0.41 + 2.5) * 14 + Math.sin(t * 0.67 + 5.1) * 6;
 
-        // Apply combined transform: float + scroll scale
+        // Apply combined transform: float + scroll scale (using currentScrollP)
         if (sc) {
-          const scale = 1 + scrollP * 5;
+          const scale = 1 + currentScrollP * 5;
           sc.style.transform = `translate(${floatX}px, ${floatY}px) scale(${scale})`;
+          // 透明度の同期も Lerp させることで滑らかに
+          sc.style.opacity = Math.max(0, 1 - (currentScrollP * 1.5)).toString();
         }
+
+        // テキストの不透明度も Lerp に同期
+        if (title) title.style.opacity = Math.max(0, 1 - currentScrollP * 2.5).toString();
+        if (caption) caption.style.opacity = Math.max(0, 0.5 - currentScrollP * 2.5).toString();
+        if (tagline) tagline.style.opacity = Math.max(0, 0.6 - currentScrollP * 2.5).toString();
 
         renderer.render(scene, camera);
       }
       animate(0);
 
-      // --- Scroll ---
+      // --- Scroll Event (Update Target Only) ---
       window.addEventListener('scroll', () => {
-        scrollP = Math.min(window.scrollY / window.innerHeight, 1.2);
-        const title = document.getElementById('title');
-        const caption = document.getElementById('caption');
-        const tagline = document.getElementById('tagline');
-
-        if (sc) {
-          sc.style.opacity = Math.max(0, 1 - (scrollP * 1.5)).toString();
-        }
-        if (title) title.style.opacity = Math.max(0, 1 - scrollP * 2.5).toString();
-        if (caption) caption.style.opacity = Math.max(0, 0.5 - scrollP * 2.5).toString();
-        if (tagline) tagline.style.opacity = Math.max(0, 0.6 - scrollP * 2.5).toString();
+        // スクロール時は目標値（target）を更新するだけにする
+        targetScrollP = Math.min(window.scrollY / window.innerHeight, 1.2);
       });
-    }
 
     if (document.readyState === 'complete') {
       startSphere();
