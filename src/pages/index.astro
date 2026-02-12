@@ -1,5 +1,5 @@
 ---
-// engawa - Bishamonkikkou Sphere Edition
+// engawa - Complete Edition (Sphere + Friction Scroll)
 ---
 
 <!DOCTYPE html>
@@ -76,8 +76,8 @@
     .hero-caption { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; position: absolute; top: 15%; left: 3rem; z-index: 50; }
     .hero-tagline { font-family: 'Lora', serif; font-size: 1.15rem; font-style: italic; max-width: 26ch; opacity: 0.6; position: absolute; bottom: 15%; right: 3rem; text-align: right; z-index: 50; }
 
-    .sphere-container { position: absolute; width: 600px; height: 600px; z-index: 20; pointer-events: none; }
-    #sphereCanvas { width: 100%; height: 100%; border-radius: 50%; }
+    .sphere-container { position: absolute; width: 600px; height: 600px; z-index: 20; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+    #sphereCanvas { width: 100%; height: 100%; }
 
     .scroll-spacer { height: 105vh; pointer-events: none; }
 
@@ -114,13 +114,6 @@
     .post-item:hover .post-date { color: var(--bg); opacity: 0.6; }
     .post-item:hover h3 { color: var(--bg); }
 
-    .post-item.touch-active {
-      background: var(--sumi);
-      padding-left: 3rem;
-    }
-    .post-item.touch-active .post-date { color: var(--bg); opacity: 0.6; }
-    .post-item.touch-active h3 { color: var(--bg); }
-
     footer { padding: 4rem 3rem; border-top: 1px solid var(--line); opacity: 0.4; font-size: 0.7rem; display: flex; justify-content: space-between; }
 
     @media (max-width: 768px) {
@@ -132,7 +125,6 @@
       .posts-section { padding: 5rem 1.5rem; }
       .post-content h3 { font-size: 1.4rem; }
       .post-item { padding: 2rem 1.5rem; margin: 0 -1.5rem; }
-      .post-item:hover, .post-item.touch-active { padding-left: 2rem; }
       footer { padding: 3rem 1.5rem; flex-direction: column; gap: 0.5rem; }
     }
   </style>
@@ -194,38 +186,15 @@
       const group = new THREE.Group();
       scene.add(group);
 
-      const R = 1.45;
+      const R = 1.2;
       const kakishibu = new THREE.Color('#D4976C');
       const kakishibuLight = new THREE.Color('#E0B090');
 
-      // ======================================================
-      // BISHAMONKIKKOU (毘沙門亀甲) SPHERE
-      //
-      // The pattern is built on a dual of the geodesic sphere:
-      // 1. Subdivide icosahedron → triangular mesh
-      // 2. Build dual mesh → hex/pent cells (Goldberg polyhedron)
-      // 3. For each hex cell, draw the bishamonkikkou motif:
-      //    - Outer hexagon ring (with angular indentations)
-      //    - Inner Y-triskelion from center to alternating edges
-      //    - Double-line effect for authentic look
-      // ======================================================
-
-      // --- Icosahedron ---
+      // --- Geometry Logic ---
       const phi = (1 + Math.sqrt(5)) / 2;
-      const icoV = [
-        [-1, phi, 0],[1, phi, 0],[-1,-phi, 0],[1,-phi, 0],
-        [0,-1, phi],[0, 1, phi],[0,-1,-phi],[0, 1,-phi],
-        [phi, 0,-1],[phi, 0, 1],[-phi, 0,-1],[-phi, 0, 1]
-      ].map(v => new THREE.Vector3(...v).normalize());
+      const icoV = [[-1,phi,0],[1,phi,0],[-1,-phi,0],[1,-phi,0],[0,-1,phi],[0,1,phi],[0,-1,-phi],[0,1,-phi],[phi,0,-1],[phi,0,1],[-phi,0,-1],[-phi,0,1]].map(v => new THREE.Vector3(...v).normalize());
+      const icoF = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
 
-      const icoF = [
-        [0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],
-        [1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],
-        [3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],
-        [4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]
-      ];
-
-      // --- Subdivide ---
       function subdivide(verts, faces, n) {
         let v = verts.map(p => p.clone());
         let f = faces;
@@ -249,167 +218,66 @@
       }
 
       const mesh = subdivide(icoV, icoF, 3);
-
-      // --- Build dual: for each original vertex, collect surrounding face centers ---
-      // This gives us hexagonal (and pentagonal at 12 ico vertices) cells
-
-      // Face centers
-      const fCenters = mesh.f.map(([a,b,c]) =>
-        new THREE.Vector3().addVectors(mesh.v[a], mesh.v[b]).add(mesh.v[c]).multiplyScalar(1/3).normalize()
-      );
-
-      // Vertex → face adjacency
+      const fCenters = mesh.f.map(([a,b,c]) => new THREE.Vector3().addVectors(mesh.v[a], mesh.v[b]).add(mesh.v[c]).multiplyScalar(1/3).normalize());
       const vertToFaces = {};
-      mesh.f.forEach((face, fi) => {
-        face.forEach(vi => {
-          if (!vertToFaces[vi]) vertToFaces[vi] = [];
-          vertToFaces[vi].push(fi);
-        });
-      });
+      mesh.f.forEach((face, fi) => { face.forEach(vi => { if (!vertToFaces[vi]) vertToFaces[vi] = []; vertToFaces[vi].push(fi); }); });
 
-      // For each vertex, sort its surrounding faces in angular order
-      function sortFacesAroundVertex(vi, faceIndices) {
-        const vn = mesh.v[vi];
-        // Build local coordinate frame
-        let up = new THREE.Vector3(0, 1, 0);
-        if (Math.abs(vn.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
-        const tx = new THREE.Vector3().crossVectors(vn, up).normalize();
-        const ty = new THREE.Vector3().crossVectors(vn, tx).normalize();
-
-        return faceIndices.sort((a, b) => {
-          const ca = fCenters[a];
-          const cb = fCenters[b];
-          const angA = Math.atan2(ca.dot(ty), ca.dot(tx));
-          const angB = Math.atan2(cb.dot(ty), cb.dot(tx));
-          return angA - angB;
-        });
-      }
-
-      // Slerp helper
       function slerp(a, b, t) {
         const dot = Math.max(-1, Math.min(1, a.dot(b)));
         const omega = Math.acos(dot);
         if (omega < 1e-5) return a.clone().lerp(b, t).normalize();
         const so = Math.sin(omega);
-        return a.clone().multiplyScalar(Math.sin((1-t)*omega)/so)
-          .add(b.clone().multiplyScalar(Math.sin(t*omega)/so)).normalize();
+        return a.clone().multiplyScalar(Math.sin((1-t)*omega)/so).add(b.clone().multiplyScalar(Math.sin(t*omega)/so)).normalize();
       }
 
-      // Arc on sphere
       function arc(p1, p2, segs) {
         const pts = [];
         for (let i = 0; i <= segs; i++) pts.push(slerp(p1, p2, i/segs));
         return pts;
       }
 
-      // Create THREE.Line on sphere surface
       function makeLine(points, color, opacity) {
-        const geom = new THREE.BufferGeometry().setFromPoints(
-          points.map(p => p.clone().normalize().multiplyScalar(R))
-        );
-        return new THREE.Line(geom, new THREE.LineBasicMaterial({
-          color, transparent: true, opacity
-        }));
+        const geom = new THREE.BufferGeometry().setFromPoints(points.map(p => p.clone().normalize().multiplyScalar(R)));
+        return new THREE.Line(geom, new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
       }
 
-      // ======================================================
-      // DRAW BISHAMONKIKKOU CELLS
-      //
-      // For each vertex (= dual cell center):
-      //   - The sorted face centers around it form the hex/pent ring
-      //   - Draw the outer ring with inward notches (the "kikkō" shape)
-      //   - Draw Y-arms from cell center toward alternating edges
-      //   - Add parallel inner lines for the double-stroke effect
-      // ======================================================
+      function sortFacesAroundVertex(vi, faceIndices) {
+        const vn = mesh.v[vi];
+        let up = new THREE.Vector3(0, 1, 0);
+        if (Math.abs(vn.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
+        const tx = new THREE.Vector3().crossVectors(vn, up).normalize();
+        const ty = new THREE.Vector3().crossVectors(vn, tx).normalize();
+        return faceIndices.sort((a, b) => {
+          const ca = fCenters[a], cb = fCenters[b];
+          return Math.atan2(ca.dot(ty), ca.dot(tx)) - Math.atan2(cb.dot(ty), cb.dot(tx));
+        });
+      }
 
-      const cellsDrawn = new Set();
-
+      // Draw Cells
       Object.keys(vertToFaces).forEach(viStr => {
-        const vi = parseInt(viStr);
-        const fIndices = vertToFaces[vi];
+        const vi = parseInt(viStr), fIndices = vertToFaces[vi];
         if (!fIndices || fIndices.length < 5) return;
-
-        const sorted = sortFacesAroundVertex(vi, [...fIndices]);
-        const n = sorted.length; // 5 or 6
-        const cellCenter = mesh.v[vi].clone().normalize();
-        const ring = sorted.map(fi => fCenters[fi].clone());
-
-        // --- Outer hexagonal ring ---
-        // Bishamonkikkou: the hex outline has angular indentations
-        // at alternating edges, creating the interlocking Y pattern.
-        // We draw: for each pair of adjacent ring points, add a
-        // slight inward bend at the midpoint of alternating edges.
-
+        const sorted = sortFacesAroundVertex(vi, [...fIndices]), n = sorted.length, cellCenter = mesh.v[vi].clone().normalize(), ring = sorted.map(fi => fCenters[fi].clone());
         for (let i = 0; i < n; i++) {
-          const curr = ring[i];
-          const next = ring[(i + 1) % n];
-          const edgeMid = slerp(curr, next, 0.5);
-
+          const curr = ring[i], next = ring[(i + 1) % n], edgeMid = slerp(curr, next, 0.5);
           if (i % 2 === 0) {
-            // Indented edge: pull midpoint inward toward cell center
             const indented = slerp(edgeMid, cellCenter, 0.28).normalize();
-            const pts = [
-              ...arc(curr, indented, 4),
-              ...arc(indented, next, 4).slice(1)
-            ];
-            group.add(makeLine(pts, kakishibu, 0.5));
-
-            // Inner parallel line
-            const innerCurr = slerp(curr, cellCenter, 0.1).normalize();
-            const innerNext = slerp(next, cellCenter, 0.1).normalize();
-            const innerIndented = slerp(indented, cellCenter, 0.08).normalize();
-            const innerPts = [
-              ...arc(innerCurr, innerIndented, 3),
-              ...arc(innerIndented, innerNext, 3).slice(1)
-            ];
-            group.add(makeLine(innerPts, kakishibuLight, 0.2));
+            group.add(makeLine([...arc(curr, indented, 4), ...arc(indented, next, 4).slice(1)], kakishibu, 0.5));
           } else {
-            // Straight edge (slightly outward for the kikkō bulge)
             const bulged = slerp(edgeMid, cellCenter, -0.08).normalize();
-            const pts = [
-              ...arc(curr, bulged, 4),
-              ...arc(bulged, next, 4).slice(1)
-            ];
-            group.add(makeLine(pts, kakishibu, 0.5));
-
-            // Inner parallel
-            const innerCurr = slerp(curr, cellCenter, 0.1).normalize();
-            const innerNext = slerp(next, cellCenter, 0.1).normalize();
-            const innerBulged = slerp(bulged, cellCenter, 0.06).normalize();
-            const innerPts = [
-              ...arc(innerCurr, innerBulged, 3),
-              ...arc(innerBulged, innerNext, 3).slice(1)
-            ];
-            group.add(makeLine(innerPts, kakishibuLight, 0.2));
+            group.add(makeLine([...arc(curr, bulged, 4), ...arc(bulged, next, 4).slice(1)], kakishibu, 0.5));
           }
         }
-
-        // --- Y-triskelion arms from center ---
-        // Arms extend from center toward the indented edges (even-indexed)
         for (let i = 0; i < n; i += 2) {
-          const target = ring[i];
-          const next = ring[(i + 1) % n];
-          const edgeMid = slerp(target, next, 0.5);
-          const indented = slerp(edgeMid, cellCenter, 0.28).normalize();
-
-          // Main arm: center → indented point
-          const armPts = arc(cellCenter, indented, 6);
-          group.add(makeLine(armPts, kakishibu, 0.45));
-
-          // Inner parallel arm (offset slightly)
-          const prev = ring[(i + n - 1) % n];
-          const offsetDir = slerp(cellCenter, prev, 0.08).normalize();
-          const innerStart = slerp(cellCenter, offsetDir, 0.12).normalize();
-          const innerEnd = slerp(indented, offsetDir, 0.06).normalize();
-          const innerArm = arc(innerStart, innerEnd, 4);
-          group.add(makeLine(innerArm, kakishibuLight, 0.18));
+          const indented = slerp(slerp(ring[i], ring[(i+1)%n], 0.5), cellCenter, 0.28).normalize();
+          group.add(makeLine(arc(cellCenter, indented, 6), kakishibu, 0.45));
         }
       });
 
-      // --- Scroll & Friction Logic ---
-      let currentScrollP = 0; // 現在の描画上の位置
-      let targetScrollP = 0;  // 実際のスクロール位置
-      const friction = 0.06;  // 摩擦係数（小さいほどゆっくり、重厚になります）
+      // --- Friction & Scroll Logic ---
+      let currentScrollP = 0;
+      let targetScrollP = 0;
+      const friction = 0.06;
 
       let floatX = 0, floatY = 0;
       const sc = document.getElementById('sphereContainer');
@@ -417,30 +285,24 @@
       const caption = document.getElementById('caption');
       const tagline = document.getElementById('tagline');
 
-      // --- Animate ---
       function animate(time) {
         requestAnimationFrame(animate);
 
-        // Lerp: 現在値を目標値に少しずつ近づける
         currentScrollP += (targetScrollP - currentScrollP) * friction;
 
         group.rotation.y += 0.002;
         group.rotation.x += 0.0007;
 
-        // Microgravity float
         const t = time * 0.001;
         floatX = Math.sin(t * 0.23) * 24 + Math.sin(t * 0.37 + 1.2) * 16 + Math.sin(t * 0.71 + 3.7) * 8;
         floatY = Math.sin(t * 0.19 + 0.8) * 20 + Math.sin(t * 0.41 + 2.5) * 14 + Math.sin(t * 0.67 + 5.1) * 6;
 
-        // Apply combined transform: float + scroll scale (using currentScrollP)
         if (sc) {
           const scale = 1 + currentScrollP * 5;
           sc.style.transform = `translate(${floatX}px, ${floatY}px) scale(${scale})`;
-          // 透明度の同期も Lerp させることで滑らかに
           sc.style.opacity = Math.max(0, 1 - (currentScrollP * 1.5)).toString();
         }
 
-        // テキストの不透明度も Lerp に同期
         if (title) title.style.opacity = Math.max(0, 1 - currentScrollP * 2.5).toString();
         if (caption) caption.style.opacity = Math.max(0, 0.5 - currentScrollP * 2.5).toString();
         if (tagline) tagline.style.opacity = Math.max(0, 0.6 - currentScrollP * 2.5).toString();
@@ -449,28 +311,17 @@
       }
       animate(0);
 
-      // --- Scroll Event (Update Target Only) ---
       window.addEventListener('scroll', () => {
-        // スクロール時は目標値（target）を更新するだけにする
         targetScrollP = Math.min(window.scrollY / window.innerHeight, 1.2);
       });
+    }
 
+    // Initialize
     if (document.readyState === 'complete') {
       startSphere();
     } else {
       window.addEventListener('load', startSphere);
     }
-
-    // Mobile touch inversion
-    document.addEventListener('DOMContentLoaded', () => {
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      if (!isTouchDevice) return;
-      document.querySelectorAll('.post-item').forEach(item => {
-        item.addEventListener('touchstart', () => item.classList.add('touch-active'), { passive: true });
-        item.addEventListener('touchend', () => setTimeout(() => item.classList.remove('touch-active'), 300), { passive: true });
-        item.addEventListener('touchcancel', () => item.classList.remove('touch-active'), { passive: true });
-      });
-    });
   </script>
 </body>
 </html>
