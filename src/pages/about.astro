@@ -1,0 +1,251 @@
+---
+// engawa - About page
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Taishi Okano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #F5F0E8;
+      --sumi:      #1C1917;
+      --text:      #3D3935;
+      --kakishibu: #D4976C;
+      --celadon:   #7FA878;
+      --line:      rgba(28, 25, 23, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    ::selection { background: var(--sumi); color: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+    }
+
+    a { 
+      color: inherit; 
+      text-decoration: none;
+      border-bottom: 1px solid var(--kakishibu);
+      transition: opacity 0.2s;
+    }
+    a:hover { opacity: 0.7; }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 3rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    .logo a { border: none; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.6;
+      border: none;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* MAIN CONTENT */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 6rem 2rem 8rem;
+    }
+
+    /* HERO SECTION */
+    .about-hero {
+      margin-bottom: 6rem;
+    }
+
+    .about-hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-hero .subtitle {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      opacity: 0.65;
+      margin-bottom: 2rem;
+    }
+
+    .tagline {
+      font-family: 'Lora', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--kakishibu);
+      margin-top: 2rem;
+      padding-left: 2rem;
+      border-left: 2px solid var(--kakishibu);
+    }
+
+    /* SECTIONS */
+    .intro-section {
+      margin-bottom: 5rem;
+    }
+
+    .intro-section p {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+
+    section {
+      margin-bottom: 5rem;
+    }
+
+    section h2 {
+      font-family: 'Lora', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      color: var(--sumi);
+    }
+
+    section p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    /* INTERESTS */
+    .interests-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .interest-tag {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(212, 151, 108, 0.12);
+      border: 1px solid rgba(212, 151, 108, 0.3);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.85rem;
+      opacity: 0.5;
+      letter-spacing: 0.02em;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav { padding: 1.5rem 2rem; }
+      .container { padding: 4rem 1.5rem 6rem; }
+      .about-hero { margin-bottom: 4rem; }
+      section { margin-bottom: 3.5rem; }
+      .tagline { padding-left: 1.5rem; font-size: 1.15rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="logo"><a href="/">engawa</a></div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    
+    <div class="about-hero">
+      <h1>Taishi Okano</h1>
+      <p class="subtitle">Venture co-founder exploring the intersection of technology and humanity.</p>
+    </div>
+
+    <section class="intro-section">
+      <p>
+        Based in the New York area, I explore the intersection of technology and humanity. As a venture co-founder focused on growth strategy, my work is rooted in a deep commitment to the end-user experience, seeking the truth behind how people actually engage with products.
+      </p>
+      <p>
+        Away from the relentless cycle of innovation, I find my ground through daily training, running, cooking, and reading. My reflections often center on what it means to maintain a sense of self and autonomy in a world increasingly shaped by digital systems.
+      </p>
+      <p>
+        Raised in Tokyo, Japan, I have a lifelong appreciation for traditional crafts and the "accumulated quality" that only time can produce. Through this blog, I aim to bridge the gap between these enduring traditions and the rapid evolution of AI, sharing insights on the thread that connects human craftsmanship with technological progress.
+      </p>
+    </section>
+
+    <section>
+      <h2>About engawa</h2>
+      <p>
+        <strong>engawa</strong> (縁側) is the traditional Japanese veranda — a liminal space between inside and outside, public and private, where one can sit and observe the world while remaining sheltered. It's a place of transition and contemplation.
+      </p>
+      <p>
+        This journal embodies that philosophy. Here, I explore the threshold between human craft and technological capability, between the accumulated wisdom of tradition and the rapid advancement of AI. Each essay examines how we might build technology that respects the grain of human experience rather than sanding it away.
+      </p>
+      <p>
+        Topics range from AI and UX design to Japanese aesthetic principles like <em>wabi-sabi</em> and <em>ma</em>, always seeking the tension point where friction becomes productive rather than merely resistive. In praise of friction — because the smoothest path isn't always the most meaningful.
+      </p>
+    </section>
+
+    <section>
+      <h2>What I Write About</h2>
+      <div class="interests-list">
+        <span class="interest-tag">AI & User Experience</span>
+        <span class="interest-tag">Growth Strategy</span>
+        <span class="interest-tag">Interface Design</span>
+        <span class="interest-tag">Japanese Aesthetics</span>
+        <span class="interest-tag">Craft & Technology</span>
+        <span class="interest-tag">Human Autonomy</span>
+        <span class="interest-tag">Design Philosophy</span>
+        <span class="interest-tag">Digital Systems</span>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>engawa · Taishi Okano · © 2026</p>
+  </footer>
+
+</body>
+</html>
