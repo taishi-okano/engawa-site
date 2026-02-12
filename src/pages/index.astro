@@ -1,581 +1,103 @@
 ---
-// engawa - Updated version v2
+// src/pages/index.astro
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>engawa — Taishi Okano</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <!-- Author Schema Markup -->
- <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Taishi Okano",
-  "url": "https://taishiokano.com",
-  "nationality": {
-    "@type": "Country",
-    "name": "Japan"
-  },
-  "jobTitle": "Product Strategy",
-  "knowsAbout": [
-    "AI", 
-    "UX", 
-    "Technology", 
-    "Traditional Japanese Crafts", 
-    "Design Philosophy"
-	”Mingei”　
-  ],
-  "description": "Exploring the intersection of AI, UX, and the timeless wisdom of Japanese crafts."
-}
-</script>
-
-  <style>
-    :root {
-      --bg:        #F5F0E8;
-      --sumi:      #1C1917;
-      --text:      #3D3935;
-      --kakishibu: #D4976C;
-      --celadon:   #7FA878;
-      --line:      rgba(28, 25, 23, 0.08);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>engawa | Taishi Okano</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Taishi Okano",
+      "url": "https://taishiokano.com",
+      "nationality": {
+        "@type": "Country",
+        "name": "Japan"
+      },
+      "knowsAbout": ["AI", "UX", "Traditional Japanese Crafts", "Mingei"],
+      "description": "Exploring the intersection of technology and the timeless wisdom of crafts."
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; scroll-behavior: smooth; }
-
-    /* Selection color fix — date and all text visible when selected */
-    ::selection {
-      background: var(--sumi);
-      color: var(--bg);
-    }
-    ::-moz-selection {
-      background: var(--sumi);
-      color: var(--bg);
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      min-height: 300vh;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    /* ===== HERO ===== */
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      position: sticky;
-      top: 0;
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2rem 3rem;
-      z-index: 100;
-      position: relative;
-    }
-
-    .logo {
-      font-family: 'Lora', serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    .nav-links a {
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      opacity: 0.6;
-      transition: opacity 0.3s;
-    }
-
-    .nav-links a:hover { opacity: 1; }
-
-    .hero-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .hero-title {
-      font-family: 'Lora', serif;
-      font-size: clamp(4rem, 10vw, 9rem);
-      font-weight: 600;
-      line-height: 0.9;
-      letter-spacing: -0.03em;
-      color: var(--sumi);
-      position: absolute;
-      top: 20%;
-      left: 3rem;
-      z-index: 50;
-    }
-
-    .hero-caption {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.5;
-      font-weight: 500;
-      position: absolute;
-      top: 15%;
-      left: 3rem;
-      z-index: 50;
-    }
-
-    .hero-tagline {
-      font-family: 'Lora', serif;
-      font-size: 1.15rem;
-      font-style: italic;
-      line-height: 1.65;
-      max-width: 26ch;
-      opacity: 0.6;
-      position: absolute;
-      bottom: 15%;
-      right: 3rem;
-      text-align: right;
-      z-index: 50;
-    }
-
-    .sphere-container {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      animation: sphereFloat 8s ease-in-out infinite;
-      filter: drop-shadow(0 60px 140px rgba(28, 25, 23, 0.3));
-    }
-
-    @keyframes sphereFloat {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      50% { transform: translateY(-50px) translateX(25px); }
-    }
-
-    #sphereCanvas {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-    }
-
-    .scroll-spacer { height: 200vh; pointer-events: none; }
-
-    /* ===== POSTS SECTION ===== */
-    .posts-section {
-      min-height: 100vh;
-      padding: 8rem 3rem;
-      background: var(--bg);
-      z-index: 100;
-      position: relative;
-    }
-
-    .posts-container { max-width: 1400px; margin: 0 auto; }
-
-    .section-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.4;
-      font-weight: 500;
-      margin-bottom: 3rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--line);
-    }
-
-    /* Post item with hover color inversion (matching original behavior) */
-    .post-item {
-      padding: 2.5rem 2rem;
-      margin: 0 -2rem;
-      border-bottom: 1px solid var(--line);
-      cursor: pointer;
-      transition: background 0.4s ease, padding-left 0.4s ease;
-      border-radius: 4px;
-    }
-
-    .post-item:hover {
-      background: var(--sumi);
-      padding-left: 3rem;
-    }
-
-    /* Date text: on hover inversion, make it light and visible */
-    .post-date {
-      font-size: 0.8rem;
-      opacity: 0.5;
-      margin-bottom: 0.4rem;
-      color: var(--text);
-      transition: color 0.4s ease, opacity 0.4s ease;
-    }
-
-    .post-item:hover .post-date {
-      color: var(--bg);
-      opacity: 0.6;
-    }
-
-    .post-content h3 {
-      font-family: 'Lora', serif;
-      font-size: 2rem;
-      font-weight: 500;
-      line-height: 1.3;
-      color: var(--sumi);
-      transition: color 0.4s ease;
-    }
-
-    .post-item:hover .post-content h3 {
-      color: var(--bg);
-    }
-
-    footer {
-      padding: 4rem 3rem;
-      border-top: 1px solid var(--line);
-      opacity: 0.4;
-      font-size: 0.7rem;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    @media (max-width: 768px) {
-      .nav { padding: 1.5rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      .hero-title { left: 1.5rem; font-size: clamp(3rem, 12vw, 5rem); }
-      .hero-caption { left: 1.5rem; }
-      .hero-tagline { right: 1.5rem; font-size: 1rem; }
-      .sphere-container { width: 300px; height: 300px; }
-      .posts-section { padding: 4rem 1.5rem; }
-      .post-item { padding: 2rem 1.5rem; margin: 0 -1.5rem; }
-      .post-item:hover { padding-left: 2.5rem; }
-      .post-content h3 { font-size: 1.4rem; }
-      footer { padding: 3rem 1.5rem; flex-direction: column; gap: 0.5rem; }
-    }
-  </style>
+    </script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; background-color: #F5F0E8; color: #1C1917; font-family: 'DM Sans', sans-serif; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        h1 { font-family: 'Lora', serif; font-size: clamp(3rem, 10vw, 6rem); font-weight: 400; margin: 0; letter-spacing: -0.02em; opacity: 0.9; }
+        .subtitle { font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 1rem; color: #8B5E3C; }
+        .content-section { max-width: 800px; margin: 0 auto; padding: 10rem 2rem; position: relative; z-index: 1; }
+        nav { position: fixed; top: 2rem; right: 2rem; z-index: 100; }
+        nav a { text-decoration: none; color: #1C1917; font-size: 0.9rem; letter-spacing: 0.1em; margin-left: 2rem; border-bottom: 1px solid transparent; transition: border 0.3s; }
+        nav a:hover { border-bottom: 1px solid #1C1917; }
+    </style>
 </head>
 <body>
-
-  <section class="hero">
-    <nav class="nav">
-      <a href="/" class="logo">engawa</a>
-      <div class="nav-links">
-        <a href="#writing">Writing</a>
-        <a href="/about">About</a>
-      </div>
+    <nav>
+        <a href="/about">ABOUT</a>
+        <a href="https://medium.com/@taishi_okano" target="_blank">WRITINGS</a>
     </nav>
 
-    <div class="hero-content">
-      <p class="hero-caption" id="caption">In praise of friction</p>
-      <h1 class="hero-title" id="title">engawa</h1>
+    <div id="canvas-container"></div>
 
-      <div class="sphere-container" id="sphereContainer">
-        <canvas id="sphereCanvas"></canvas>
-      </div>
+    <section class="hero">
+        <h1>engawa</h1>
+        <p class="subtitle">AI & Craftsmanship</p>
+    </section>
 
-      <p class="hero-tagline" id="tagline">Where technology meets the grain of human things.</p>
-    </div>
-  </section>
+    <section class="content-section">
+        <h2>Philosophy</h2>
+        <p>テクノロジーと人間の間にある「摩擦」を愛でること。効率化の先にある、工芸的な手触りを持つプロダクトの未来を追求しています。</p>
+    </section>
 
-  <div class="scroll-spacer"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script is:inline>
+        let scene, camera, renderer, sphere;
 
-  <section class="posts-section" id="writing">
-    <div class="posts-container">
-      <div class="section-label">Writing</div>
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-      <article class="post-item">
-        <div class="post-content">
-          <p class="post-date">Feb 2026</p>
-          <h3>Why the Future of AI and UX Depends on Interfaces Beyond Screens</h3>
-        </div>
-      </article>
-    </div>
-  </section>
+            // 幾何学的なワイヤーフレーム球体 (Flower of Life 参照)
+            const geometry = new THREE.IcosahedronGeometry(2, 2);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0x8B5E3C,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
+            });
+            sphere = new THREE.Mesh(geometry, material);
+            scene.add(sphere);
 
-  <footer>
-    <div>engawa · Taishi Okano</div>
-    <div>© 2026 · New York / Tokyo</div>
-  </footer>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-  <script is:inline>
-    // ===== Dense Flower of Life 3D Sphere =====
-    // Reference photo: crystal ball with intricate, dense overlapping circles
-    // and fine radial lines creating a "Flower of Life / Sacred Geometry" look.
-    (function() {
-      const canvas = document.getElementById('sphereCanvas');
-      const container = document.getElementById('sphereContainer');
-      if (!canvas || !container) return;
-
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(500, 500);
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-      camera.position.z = 4.2;
-
-      const group = new THREE.Group();
-      scene.add(group);
-
-      const R = 1.45;
-
-      // --- Colors ---
-      const kakishibu     = new THREE.Color('#D4976C');
-      const kakishibuLight = new THREE.Color('#DEB892');
-      const creamLine      = new THREE.Color('#C8A882');
-      const fineDetail     = new THREE.Color('#BFA07A');
-      const sumiLight      = new THREE.Color('#8A7E76');
-      const warmWhite      = new THREE.Color('#FFF8F0');
-
-      // === Base sphere ===
-      const baseMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color('#F5EDE0'),
-        transparent: true, opacity: 0.38,
-        roughness: 0.3, metalness: 0.05,
-        clearcoat: 0.6, clearcoatRoughness: 0.2,
-        side: THREE.FrontSide,
-      });
-      group.add(new THREE.Mesh(new THREE.SphereGeometry(R, 64, 64), baseMat));
-
-      // === Inner glow ===
-      const glowMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color('#FFF5EA'),
-        transparent: true, opacity: 0.22,
-        roughness: 0.6,
-        emissive: new THREE.Color('#F5E6D0'), emissiveIntensity: 0.2,
-        side: THREE.FrontSide,
-      });
-      group.add(new THREE.Mesh(new THREE.SphereGeometry(R * 0.9, 48, 48), glowMat));
-
-      // ======= FLOWER OF LIFE PATTERN =======
-
-      // Helper: Fibonacci sphere point distribution
-      function fibSphere(n) {
-        const pts = [];
-        const phi = Math.PI * (3 - Math.sqrt(5));
-        for (let i = 0; i < n; i++) {
-          const y = 1 - (i / (n - 1)) * 2;
-          const r = Math.sqrt(1 - y * y);
-          const th = phi * i;
-          pts.push(new THREE.Vector3(Math.cos(th) * r, y, Math.sin(th) * r).normalize());
+            camera.position.z = 5;
         }
-        return pts;
-      }
 
-      // Helper: draw a circle (line loop) on the sphere surface at a given normal direction
-      function makeCircle(normal, radius, color, opacity, segs) {
-        segs = segs || 48;
-        // Build a local frame
-        const n = normal.clone().normalize();
-        let up = new THREE.Vector3(0, 1, 0);
-        if (Math.abs(n.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
-        const t1 = new THREE.Vector3().crossVectors(n, up).normalize();
-        const t2 = new THREE.Vector3().crossVectors(n, t1).normalize();
-
-        const verts = [];
-        for (let i = 0; i <= segs; i++) {
-          const a = (i / segs) * Math.PI * 2;
-          const p = n.clone().multiplyScalar(R * 0.998)
-            .add(t1.clone().multiplyScalar(Math.cos(a) * radius))
-            .add(t2.clone().multiplyScalar(Math.sin(a) * radius));
-          verts.push(p);
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.y += 0.002;
+            sphere.rotation.x += 0.001;
+            renderer.render(scene, camera);
         }
-        const geom = new THREE.BufferGeometry().setFromPoints(verts);
-        return new THREE.Line(geom, new THREE.LineBasicMaterial({
-          color, transparent: true, opacity
-        }));
-      }
 
-      // Helper: radial "petal" lines from a center on the sphere
-      function makePetals(normal, petalLen, numPetals, color, opacity) {
-        const n = normal.clone().normalize();
-        let up = new THREE.Vector3(0, 1, 0);
-        if (Math.abs(n.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
-        const t1 = new THREE.Vector3().crossVectors(n, up).normalize();
-        const t2 = new THREE.Vector3().crossVectors(n, t1).normalize();
-        const center = n.clone().multiplyScalar(R * 0.998);
+        window.addEventListener('scroll', () => {
+            const scroll = window.scrollY;
+            sphere.scale.set(1 + scroll * 0.001, 1 + scroll * 0.001, 1 + scroll * 0.001);
+            sphere.material.opacity = 0.3 + scroll * 0.0005;
+        });
 
-        const lines = [];
-        for (let i = 0; i < numPetals; i++) {
-          const a = (i / numPetals) * Math.PI * 2;
-          const end = center.clone()
-            .add(t1.clone().multiplyScalar(Math.cos(a) * petalLen))
-            .add(t2.clone().multiplyScalar(Math.sin(a) * petalLen));
-          const geom = new THREE.BufferGeometry().setFromPoints([center, end]);
-          lines.push(new THREE.Line(geom, new THREE.LineBasicMaterial({
-            color, transparent: true, opacity
-          })));
-        }
-        return lines;
-      }
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
-      // Helper: great-circle arc between two sphere surface points
-      function makeArc(p1, p2, color, opacity, steps) {
-        steps = steps || 24;
-        const d1 = p1.clone().normalize();
-        const d2 = p2.clone().normalize();
-        const omega = Math.acos(Math.max(-1, Math.min(1, d1.dot(d2))));
-        if (omega < 0.001) return null;
-        const pts = [];
-        for (let s = 0; s <= steps; s++) {
-          const t = s / steps;
-          const interp = d1.clone().multiplyScalar(Math.sin((1 - t) * omega) / Math.sin(omega))
-            .add(d2.clone().multiplyScalar(Math.sin(t * omega) / Math.sin(omega)));
-          pts.push(interp.multiplyScalar(R * 0.998));
-        }
-        const geom = new THREE.BufferGeometry().setFromPoints(pts);
-        return new THREE.Line(geom, new THREE.LineBasicMaterial({
-          color, transparent: true, opacity
-        }));
-      }
-
-      const flowerGroup = new THREE.Group();
-
-      // ---- Layer 1: Primary Flower of Life circles (dense, 150 points) ----
-      const primaryPts = fibSphere(150);
-      const primaryR = 0.2;
-      primaryPts.forEach(pt => {
-        flowerGroup.add(makeCircle(pt, primaryR, kakishibu, 0.5, 48));
-      });
-
-      // ---- Layer 2: Overlapping medium circles (90 points, larger radius) ----
-      const medPts = fibSphere(90);
-      const medR = 0.34;
-      medPts.forEach(pt => {
-        flowerGroup.add(makeCircle(pt, medR, kakishibuLight, 0.22, 48));
-      });
-
-      // ---- Layer 3: "Seed of Life" radial petals at each primary node ----
-      primaryPts.forEach(pt => {
-        const petals = makePetals(pt, primaryR * 0.9, 6, creamLine, 0.35);
-        petals.forEach(l => flowerGroup.add(l));
-      });
-
-      // ---- Layer 4: Fine detail circles (250 points, very small) ----
-      const finePts = fibSphere(250);
-      const fineR = 0.08;
-      finePts.forEach(pt => {
-        flowerGroup.add(makeCircle(pt, fineR, fineDetail, 0.22, 20));
-      });
-
-      // ---- Layer 5: Connecting arcs (nearest-neighbor web) ----
-      const arcPts = fibSphere(100);
-      arcPts.forEach((pt, i) => {
-        // Find 3 nearest neighbors
-        let neighbors = arcPts
-          .map((o, j) => ({ j, d: pt.distanceTo(o) }))
-          .filter(x => x.j !== i)
-          .sort((a, b) => a.d - b.d);
-
-        for (let n = 0; n < 3; n++) {
-          const arc = makeArc(pt, arcPts[neighbors[n].j], kakishibu, 0.14, 20);
-          if (arc) flowerGroup.add(arc);
-        }
-      });
-
-      // ---- Layer 6: Secondary petal details at medium points ----
-      medPts.forEach(pt => {
-        const petals = makePetals(pt, medR * 0.7, 12, fineDetail, 0.15);
-        petals.forEach(l => flowerGroup.add(l));
-      });
-
-      // ---- Layer 7: Large structural rings (20 points) ----
-      const largePts = fibSphere(20);
-      const largeR = 0.55;
-      largePts.forEach(pt => {
-        flowerGroup.add(makeCircle(pt, largeR, kakishibuLight, 0.1, 64));
-      });
-
-      group.add(flowerGroup);
-
-      // === Subtle geodesic wireframe ===
-      const icoEdges = new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(R * 1.001, 3));
-      group.add(new THREE.LineSegments(icoEdges, new THREE.LineBasicMaterial({
-        color: sumiLight, transparent: true, opacity: 0.035
-      })));
-
-      // === Outer glass shell ===
-      const shellMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color('#FFFFFF'),
-        transparent: true, opacity: 0.06,
-        roughness: 0.05, metalness: 0.1,
-        clearcoat: 1.0, clearcoatRoughness: 0.05,
-        side: THREE.FrontSide,
-      });
-      group.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.01, 64, 64), shellMat));
-
-      // ===== Lighting =====
-      scene.add(new THREE.AmbientLight(warmWhite, 0.9));
-      const key = new THREE.DirectionalLight(new THREE.Color('#FFF5E8'), 1.2);
-      key.position.set(3, 4, 5); scene.add(key);
-      const fill = new THREE.DirectionalLight(new THREE.Color('#E8DDD0'), 0.5);
-      fill.position.set(-3, -1, 3); scene.add(fill);
-      const rim = new THREE.DirectionalLight(new THREE.Color('#D4976C'), 0.35);
-      rim.position.set(0, -3, -3); scene.add(rim);
-
-      // ===== Animate =====
-      function animate() {
-        requestAnimationFrame(animate);
-        group.rotation.y += 0.002;
-        group.rotation.x += 0.0008;
-        renderer.render(scene, camera);
-      }
-      animate();
-
-      // ===== Resize =====
-      function onResize() {
-        const w = container.clientWidth, h = container.clientHeight;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-      window.addEventListener('resize', onResize);
-      onResize();
-    })();
-
-    // ===== Scroll parallax =====
-    (function() {
-      const sc = document.getElementById('sphereContainer');
-      const title = document.getElementById('title');
-      const caption = document.getElementById('caption');
-      const tagline = document.getElementById('tagline');
-
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY, h = window.innerHeight;
-        const p = Math.min(y / h, 2);
-        if (!sc) return;
-
-        if (p <= 1) {
-          const s = 1 + (p * 3);
-          sc.style.transform = `translateY(${-50 * Math.sin(Date.now() / 4000)}px) scale(${s})`;
-          sc.style.opacity = '1';
-          if (title) title.style.opacity = (1 - p);
-          if (caption) caption.style.opacity = (0.5 - p * 0.5);
-          if (tagline) tagline.style.opacity = (0.6 - p * 0.6);
-        } else {
-          const p2 = p - 1;
-          sc.style.transform = `scale(${4 + p2 * 6})`;
-          sc.style.opacity = (1 - p2 * 0.95).toString();
-        }
-      });
-    })();
-  </script>
+        init();
+        animate();
+    </script>
 </body>
 </html>
