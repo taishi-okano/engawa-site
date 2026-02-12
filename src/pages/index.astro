@@ -1,5 +1,9 @@
 ---
-// engawa - Complete Edition (Sphere + Friction Scroll)
+//
+import { getCollection } from 'astro:content';
+const posts = await getCollection('blog');
+// 日付順に並び替え
+const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
 ---
 
 <!DOCTYPE html>
@@ -154,12 +158,18 @@
   <section class="posts-section" id="writing">
     <div class="posts-container">
       <div class="section-label">Writing</div>
-      <a href="#" class="post-item">
-        <div class="post-content">
-          <p class="post-date">Feb 2026</p>
-          <h3>Why the Future of AI and UX Depends on Interfaces Beyond Screens</h3>
-        </div>
-      </a>
+
+      {/* 👇 ここから自動生成コード */}
+      {sortedPosts.map(post => (
+        <a href={`/writing/${post.slug}`} class="post-item">
+          <div class="post-content">
+            <p class="post-date">{post.data.pubDate}</p>
+            <h3>{post.data.title}</h3>
+          </div>
+        </a>
+      ))}
+      {/* 👆 ここまで */}
+
     </div>
   </section>
 
