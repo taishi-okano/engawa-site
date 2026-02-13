@@ -1,13 +1,12 @@
 ---
 title: "Why the Future of AI and UX Depends on Interfaces Beyond Screens"
-description: "Future AI and UX depend on multisensory interfaces beyond screens. The Shift from Efficiency to Trust in the Age of Autonomous Systems."
+subtitle: "The Shift from Efficiency to Trust in the Age of Autonomous Systems"
+description: "Future AI and UX depend on multisensory interfaces beyond screens."
 pubDate: "Feb 06 2026"
 category: "AI & UX"
 tags: ["Future Interfaces", "UX", "Tech & AI"]
 canonicalURL: "https://taishiokano.com/writing/future-of-ai-ux"
 ---
-
-<p class="subtitle">The Shift from Efficiency to Trust in the Age of Autonomous Systems</p>
 
 > **TL;DR: The Screen is the Bottleneck**
 >
@@ -210,6 +209,7 @@ Until then, we'll keep debating, experimenting, and dreaming. And maybe, one day
 
 
 ---
+
 ### FAQ
 
 **Q: Why should AI move beyond screens?**
