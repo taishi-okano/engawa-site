@@ -174,8 +174,8 @@ Technology where the entire environment functions as an interface.
 * Environmental AR: Technology providing information by integrating AR into real-world environments
 
 ### 10. Other Future Interfaces
-* *DNA computing: Interfaces utilizing human DNA for information processing
-* *Quantum interfaces: Technology directly connecting quantum computers with humans (theoretical stage)
+* DNA computing: Interfaces utilizing human DNA for information processing
+* Quantum interfaces: Technology directly connecting quantum computers with humans (theoretical stage)
 
 ## Reimagining User Experience
 
