@@ -1,12 +1,12 @@
 ---
 title: "Why the Future of AI and UX Depends on Interfaces Beyond Screens"
-subtitle: "The Shift from Efficiency to Trust in the Age of Autonomous Systems"
 description: "Future AI and UX depend on multisensory interfaces beyond screens."
 pubDate: "Feb 06 2026"
 category: "AI & UX"
 tags: ["Future Interfaces", "UX", "Tech & AI"]
 canonicalURL: "https://taishiokano.com/writing/future-of-ai-ux"
 ---
+## The Shift from Efficiency to Trust in the Age of Autonomous Systems
 
 > **TL;DR: The Screen is the Bottleneck**
 >
@@ -174,8 +174,8 @@ Technology where the entire environment functions as an interface.
 * Environmental AR: Technology providing information by integrating AR into real-world environments
 
 ### 10. Other Future Interfaces
-* **DNA computing:** Interfaces utilizing human DNA for information processing
-* **Quantum interfaces:** Technology directly connecting quantum computers with humans (theoretical stage)
+* *DNA computing: Interfaces utilizing human DNA for information processing
+* *Quantum interfaces: Technology directly connecting quantum computers with humans (theoretical stage)
 
 ## Reimagining User Experience
 
