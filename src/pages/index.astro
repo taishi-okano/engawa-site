@@ -12,6 +12,7 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - ne
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>engawa — Taishi Okano</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -70,7 +71,13 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - ne
       position: relative;
     }
 
-    .logo { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600; text-decoration: none; color: var(--sumi); letter-spacing: 0.08em; }
+    .logo-img {
+      width: 48px;
+      height: auto;
+      display: block;
+    }
+    .logo-img:hover { opacity: 0.7; }
+
     .nav-links { display: flex; gap: 2.5rem; }
     .nav-links a { font-size: 0.85rem; opacity: 0.6; text-decoration: none; transition: 0.3s; color: var(--sumi); }
     .nav-links a:hover { opacity: 1; }
@@ -122,6 +129,7 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - ne
 
     @media (max-width: 768px) {
       .nav { padding: 1.5rem 1.5rem; }
+      .logo-img { width: 40px; }
       .hero-title { left: 1.5rem; }
       .hero-caption { left: 1.5rem; }
       .hero-tagline { right: 1.5rem; font-size: 1rem; }
@@ -137,7 +145,10 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.pubDate).getTime() - ne
 
   <section class="hero">
     <nav class="nav">
-      <a href="/" class="logo">engawa</a>
+      <a href="/">
+        <img src="/logo.svg" alt="engawa" class="logo-img" />
+      </a>
+      
       <div class="nav-links">
         <a href="#writing">Writing</a>
         <a href="/about">About</a>
